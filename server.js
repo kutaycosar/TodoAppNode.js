@@ -30,15 +30,15 @@ app.get('/', function(req, res) {
   <h1 class="display-4 text-center py-1">To-Do App!</h1>
   
   <div class="jumbotron p-3 shadow-sm">
-  <form id"create-form" action="/create-item" method="POST">
+  <form action="/create-item" method="POST">
   <div class="d-flex align-items-center">
-  <input id="create-field" name="item" autofocus autocomplete="off" class="form-control mr-3" type="text" style="flex: 1;">
+  <input name="item" autofocus autocomplete="off" class="form-control mr-3" type="text" style="flex: 1;">
   <button class="btn btn-primary">Add New Item</button>
   </div>
   </form>
   </div>
   
-  <ul id="item-list" class="list-group pb-5">
+  <ul class="list-group pb-5">
     ${items.map(function(item) {
       return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
       <span class="item-text">${item.text}</span>
@@ -60,8 +60,8 @@ app.get('/', function(req, res) {
 })
 
 app.post('/create-item', function(req, res) {
-  db.collection('items').insertOne({text: req.body.text}, function() {
-    res.send("success")
+  db.collection('items').insertOne({text: req.body.item}, function() {
+    res.redirect('/')
   })
 })
 
@@ -71,12 +71,8 @@ app.post('/update-item', function(req, res) {
   })
 })
 
-app.post('/delete-item', function(req, res){
-  db.collection('items').deleteOne({_id: new mongodb.ObjectId(req.body.id)}, {$set: {text: req.body.text}}, function(){
+app.post('/delete-item', function(req, res) {
+  db.collection('items').deleteOne({_id: new mongodb.ObjectId(req.body.id)}, function() {
     res.send("Success")
   })
 })
-
-//stupid comment
-
-//super stupid comment added
